@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="create project">
-      <change afterPath="$PROJECT_DIR$/differential_equations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/graphs_output.py" afterDir="false" />
+    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="lyapynov add">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -90,7 +88,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733650791063</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="lyapynov add">
+      <option name="closed" value="true" />
+      <created>1733725376469</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1733725376469</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -106,6 +112,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create project" />
-    <option name="LAST_COMMIT_MESSAGE" value="create project" />
+    <MESSAGE value="lyapynov add" />
+    <option name="LAST_COMMIT_MESSAGE" value="lyapynov add" />
   </component>
 </project>
