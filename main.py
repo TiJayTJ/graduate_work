@@ -76,3 +76,4 @@ for i in range(len(koefs)):
     plt.title("Evolution of the LCE for the first 5000 time steps")
     plt.show()
 
+
