@@ -46,3 +46,4 @@ def print_phase_space(x_t_valuesdop, y_t_valuesdop, z_t_valuesdop):
     yz_plot.set_ylabel("z")
 
     plt.grid(True)
+    plt.show()
