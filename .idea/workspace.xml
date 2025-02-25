@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="add dna codding &amp; dna addition">
+    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="add dna diffusion">
+      <change afterPath="$PROJECT_DIR$/dna.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -204,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740153379074</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add dna diffusion">
+      <option name="closed" value="true" />
+      <created>1740419222268</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740419222268</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,6 +234,7 @@
     <MESSAGE value="add attractor and bifurcation" />
     <MESSAGE value="add system.py&#10;simplify attractor_calc.py" />
     <MESSAGE value="add dna codding &amp; dna addition" />
-    <option name="LAST_COMMIT_MESSAGE" value="add dna codding &amp; dna addition" />
+    <MESSAGE value="add dna diffusion" />
+    <option name="LAST_COMMIT_MESSAGE" value="add dna diffusion" />
   </component>
 </project>
