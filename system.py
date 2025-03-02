@@ -1,3 +1,5 @@
+import hashlib
+
 import numpy as np
 
 
@@ -48,3 +50,23 @@ def jacobian_built(koefs):
     return jacobian
 
 
+def sha512hash(text):
+    hashed_text = hashlib.sha512(text.encode('utf-8')).hexdigest()
+    return hashed_text
+
+
+def get_initial_state(image):
+    # Приведение изображение к тектовому виду
+    image_str = np.array2string(image)
+    image_hash = sha512hash(image_str)[:128]
+    h32 = [0]*32
+    for i in range(0, 128, 4):
+        h32[i // 4] = int(image_hash[i:i+4], 16)
+    keys = [0]*6
+    for i in range(6):
+        h_sum5 = 0
+        for j in range(5):
+            h_sum5 += h32[i*5 + j]
+        h_sum5 = int(h_sum5 / 5) % 256
+        keys[i] = h_sum5
+    return keys

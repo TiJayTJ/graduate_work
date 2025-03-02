@@ -47,3 +47,10 @@ def print_phase_space(x_t_valuesdop, y_t_valuesdop, z_t_valuesdop):
 
     plt.grid(True)
     plt.show()
+
+
+def print_image(image, title):
+    plt.imshow(image)
+    plt.axis("off")
+    plt.title(title)
+    plt.show()
