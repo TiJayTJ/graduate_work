@@ -4,10 +4,15 @@ import numpy as np
 
 
 def main_system(t, state):
+    # x, y, z = state
+    # dxdt = y - 9 * x + y * z
+    # dydt = 30 * x - 3 * y - x * z
+    # dzdt = -3.5 * z + x * y + x ** 2
+    # return [dxdt, dydt, dzdt]
     x, y, z = state
-    dxdt = y - 9 * x + y * z
-    dydt = 30 * x - 3 * y - x * z
-    dzdt = -3.5 * z + x * y + x ** 2
+    dxdt = 10*(y-x)
+    dydt = x*(28-z) - y
+    dzdt = x*y-8/3*z
     return [dxdt, dydt, dzdt]
 
 

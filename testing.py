@@ -4,10 +4,11 @@ import numpy as np
 def mix_matrix(matrix):
     n = len(matrix)     # кол-во столбцов матрицы
     m = len(matrix[0])      # кол-во строк матрицы
+    h = len(matrix[0][0])  # глубина матрицы
     row_half = n // 2
-    mixed_matrix = np.empty((n, m, 3), dtype=np.uint8)
+    mixed_matrix = np.empty((n, m, h), dtype=np.uint8)
 
-    for k in range(3):
+    for k in range(h):
         counter = 0
         for i in range(row_half):
             for j in range(i, m - i - 1):
@@ -22,10 +23,11 @@ def mix_matrix(matrix):
 def unmix_matrix(mixed_matrix):
     n = len(mixed_matrix)     # кол-во столбцов матрицы
     m = len(mixed_matrix[0])      # кол-во строк матрицы
+    h = len(mixed_matrix[0][0])      # глубина матрицы
     row_half = n // 2
-    unmixed_matrix = np.empty((n, m, 3), dtype=np.uint8)
+    unmixed_matrix = np.empty((n, m, h), dtype=np.uint8)
 
-    for k in range(3):
+    for k in range(h):
         counter = 0
         for i in range(row_half):
             for j in range(i, m - i - 1):
