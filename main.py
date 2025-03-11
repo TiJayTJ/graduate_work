@@ -1,4 +1,5 @@
 import numpy as np
+from PIL import Image
 from scipy.integrate import solve_ivp
 from skimage import data
 from matplotlib import pyplot as plt
@@ -8,7 +9,7 @@ from dna import dna_diffusion, dna_diffusion_reverse, \
     uint8_matrix_to_dna, dna_matrix_to_uint8, dna_xor_diffusion
 from graphs_output import print_image, print_phase_space
 from system import main_system, get_initial_state
-from testing import mix_matrix, unmix_matrix
+from matrix import mix_matrix, unmix_matrix
 
 
 def array_to_matrix(array, n, m):
@@ -21,9 +22,9 @@ def array_to_matrix(array, n, m):
 
     # Преобразования решения в матрицу
     for i in range(n*m):
-        x_val_converted[i] = int(x_val_converted[i]) % 256
-        y_val_converted[i] = int(y_val_converted[i]) % 256
-        z_val_converted[i] = int(z_val_converted[i]) % 256
+        x_val_converted[i] = int(x_val_converted[i] * 10**5) % 256
+        y_val_converted[i] = int(y_val_converted[i] * 10**5) % 256
+        z_val_converted[i] = int(z_val_converted[i] * 10**5) % 256
 
     matrix = np.empty((n, m, 3), dtype=np.uint8)
     for i in range(n*m):
@@ -35,9 +36,11 @@ def array_to_matrix(array, n, m):
 
 
 # Загружаем изображение
-image = data.astronaut()
-img_col_size, img_row_size, _ = image.shape
+# image = data.astronaut()
+image = Image.open("lena.png")
 image_array = np.array(image)
+img_col_size, img_row_size, _ = image_array.shape
+
 
 # Создание фигуры и осей
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
@@ -53,9 +56,9 @@ axes[0].set_title("Оригинальное изображение")
 # Решение системы
 initial_state12 = get_initial_state(image_array)  # Начальные условия
 initial_state1 = initial_state12[:3]
-print(initial_state1)
+# print(initial_state1)
 initial_state2 = initial_state12[3:]
-print(initial_state2)
+# print(initial_state2)
 solution1 = solve_ivp(
         main_system, [0, 1200], initial_state1, t_eval=np.linspace(1000, 1200, img_col_size*img_row_size)
     )
@@ -73,9 +76,24 @@ print(f"Корреляционная размерность: {dimension}")
 matrix_a = array_to_matrix(solution1.y, img_row_size, img_col_size)
 matrix_b = array_to_matrix(solution2.y, img_row_size, img_col_size)
 
+# plt.imshow(matrix_a)
+# plt.axis("off")
+# plt.title("матрица а")
+# plt.show()
+#
+# plt.imshow(matrix_b)
+# plt.axis("off")
+# plt.title("матрица b")
+# plt.show()
+
+
+# plt.hist(matrix_a.flatten(), bins=256)
+# plt.hist(matrix_b.flatten(), bins=256)
+# plt.show()
+
 # Применяем метод ротационного арифметичесского извлечения
 mixed_matrix = mix_matrix(image_array)
-print_image(mixed_matrix, "Перемешанное изображение")
+# print_image(mixed_matrix, "Перемешанное изображение")
 
 # Применение ДНК кодирование для изображения и матрицы
 dna_image = uint8_matrix_to_dna(mixed_matrix)
