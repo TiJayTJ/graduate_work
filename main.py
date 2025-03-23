@@ -35,16 +35,47 @@ def array_to_matrix(array, n, m):
     return matrix
 
 
+def histogram_analise(image_array, encoded_image):
+    # Строим гистограммы
+    plt.figure(figsize=(15, 3))
+
+    # Показываем исходное изображение
+    plt.subplot(1, 4, 1)
+    plt.imshow(image)
+    plt.axis('off')
+
+    # Гистограмма исходного изображения
+    plt.subplot(1, 4, 2)
+    for i, color in enumerate(['red', 'green', 'blue']):
+        hist_values, _ = np.histogram(image_array[:, :, i], bins=256, range=(0, 256))
+        plt.bar(range(256), hist_values, color=color, alpha=0.7, width=1.0, label=color)
+    plt.xlabel('Gray value')
+    plt.ylabel('The number of pixels')
+    plt.legend()
+
+    # Показываем зашифрованное изображение
+    plt.subplot(1, 4, 3)
+    plt.imshow(encoded_image)
+    plt.axis('off')
+
+    # Гистограмма зашифрованного изображения
+    plt.subplot(1, 4, 4)
+    for i, color in enumerate(['red', 'green', 'blue']):
+        hist_values, _ = np.histogram(encoded_image[:, :, i], bins=256, range=(0, 256))
+        plt.bar(range(256), hist_values, color=color, alpha=0.7, width=1.0, label=color)
+    plt.xlabel('Gray value')
+    plt.ylabel('The number of pixels')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+
 # Загружаем изображение
 # image = data.astronaut()
 image = Image.open("lena.png")
 image_array = np.array(image)
 img_col_size, img_row_size, _ = image_array.shape
-
-plt.hist(image_array[:][:][0].ravel(), bins=256, color='red', fc='k', ec='k')
-plt.hist(image_array[:][:][1].ravel(), bins=256, color='green', fc='k', ec='k')
-plt.hist(image_array[:][:][2].ravel(), bins=256, color='blue', fc='k', ec='k')
-plt.show()
 
 # --------------------------------- Шифрование ---------------------------------
 
@@ -64,8 +95,8 @@ solution2 = solve_ivp(
 # print_phase_space(solution2.y[0], solution2.y[1], solution2.y[2])
 
 # Вычисление корреляционной размерности
-dimension = corr_dim(solution1.y[0][:10000], emb_dim=3)
-print(f"Корреляционная размерность: {dimension}")
+# dimension = corr_dim(np.array(solution1.y[0]), emb_dim=3)
+# print(f"Корреляционная размерность: {dimension}")
 
 # Получаем матрицы для шифрования изображения
 matrix_a = array_to_matrix(solution1.y, img_row_size, img_col_size)
@@ -89,10 +120,7 @@ encoded_image = dna_matrix_to_uint8(dna_encoded_image)
 
 # --------------------------------- Численныйт анализ ---------------------------------
 
-plt.hist(encoded_image[:][:][0].ravel(), bins=256, color='red', fc='k', ec='k')
-plt.hist(encoded_image[:][:][1].ravel(), bins=256, color='green', fc='k', ec='k')
-plt.hist(encoded_image[:][:][2].ravel(), bins=256, color='blue', fc='k', ec='k')
-plt.show()
+histogram_analise(image_array, encoded_image)
 
 # --------------------------------- Дешифровка ---------------------------------
 
