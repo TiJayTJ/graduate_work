@@ -64,14 +64,14 @@ def get_initial_state(image):
     # Приведение изображение к тектовому виду
     image_str = np.array2string(image)
     image_hash = sha512hash(image_str)[:128]
-    h32 = [0]*32
-    for i in range(0, 128, 4):
-        h32[i // 4] = int(image_hash[i:i+4], 16)
-    keys = [0]*6
+    h64 = [0]*64
+    for i in range(0, 128, 2):
+        h64[i // 2] = int(image_hash[i:i+2], 16)
+    keys = [0.0]*6
     for i in range(6):
-        h_sum5 = 0
-        for j in range(5):
-            h_sum5 += h32[i*5 + j]
-        h_sum5 = int(h_sum5 / 5) % 256
-        keys[i] = h_sum5
+        h_sum = 0
+        for j in range(10):
+            h_sum += h64[i*10 + j]
+        h_sum = round(int(h_sum / 10) / 256, 2)
+        keys[i] = h_sum
     return keys

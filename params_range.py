@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 from system import system_built, jacobian_built
 from differential_equations import solve_sde
-from graphs_output import print_phase_space
+from printers import print_phase_space
 
 N = 20000
 t = np.linspace(0, 100, N)

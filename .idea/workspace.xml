@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="code editing">
+    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="add histogram_analise()">
+      <change afterPath="$PROJECT_DIR$/encrypt_decrypt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/encryption_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/attractor_calc.py" beforeDir="false" afterPath="$PROJECT_DIR$/attractor_calc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphs_output.py" beforeDir="false" afterPath="$PROJECT_DIR$/printers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/matrix.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params_range.py" beforeDir="false" afterPath="$PROJECT_DIR$/params_range.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/system.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,7 +307,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742225525530</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add histogram_analise()">
+      <option name="closed" value="true" />
+      <created>1742763448519</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1742763448519</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -327,6 +342,7 @@
     <MESSAGE value="update" />
     <MESSAGE value="working encryption algorithm" />
     <MESSAGE value="code editing" />
-    <option name="LAST_COMMIT_MESSAGE" value="code editing" />
+    <MESSAGE value="add histogram_analise()" />
+    <option name="LAST_COMMIT_MESSAGE" value="add histogram_analise()" />
   </component>
 </project>

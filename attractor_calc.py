@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 # from differential_equations import solve_sde
-from graphs_output import print_phase_space
+from printers import print_phase_space
 from system import main_system
 
 N = 20000

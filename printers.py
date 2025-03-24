@@ -49,6 +49,23 @@ def print_phase_space(x_t_valuesdop, y_t_valuesdop, z_t_valuesdop):
     plt.show()
 
 
+def print_three_img(image, encoded_image, unmixed_matrix):
+    # Создание фигуры и осей
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+    axes[0].imshow(image)
+    axes[0].axis("off")
+    axes[0].set_title("Оригинальное изображение")
+
+    axes[1].imshow(encoded_image)
+    axes[1].axis("off")
+    axes[1].set_title("Зашифрованное изображение")
+
+    axes[2].imshow(unmixed_matrix)
+    axes[2].axis("off")
+    axes[2].set_title("Восстановленное изображение из ДНК")
+    plt.show()
+
 def print_image(image, title):
     plt.imshow(image)
     plt.axis("off")
