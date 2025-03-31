@@ -25,8 +25,7 @@ def dna_to_byte(dna):
 
 
 def uint8_matrix_to_dna(matrix):
-    matrix_row = len(matrix)
-    matrix_col = len(matrix[0])
+    matrix_row, matrix_col, _ = matrix.shape
     dna_matrix = np.empty((matrix_row, matrix_col, 3), dtype=object)
 
     for i in range(matrix_row):
@@ -38,8 +37,7 @@ def uint8_matrix_to_dna(matrix):
 
 
 def dna_matrix_to_uint8(matrix):
-    matrix_row = len(matrix)
-    matrix_col = len(matrix[0])
+    matrix_row, matrix_col, _ = matrix.shape
     dna_matrix = np.zeros((matrix_row, matrix_col, 3), dtype=np.uint8)
 
     for i in range(matrix_row):
@@ -84,8 +82,7 @@ def dna_sub(base1, base2):
 
 
 def dna_diffusion(dna_matrix1, dna_matrix2):
-    matrix_row = len(dna_matrix1)
-    matrix_col = len(dna_matrix1[0])
+    matrix_row, matrix_col, _ = dna_matrix1.shape
     # Складываем ДНК основания по правилам
     dna_encoded_image = np.empty((matrix_row, matrix_col, 3), dtype=object)
     for i in range(matrix_row):
@@ -98,8 +95,7 @@ def dna_diffusion(dna_matrix1, dna_matrix2):
 
 
 def dna_diffusion_reverse(dna_matrix1, dna_matrix2):
-    matrix_row = len(dna_matrix1)
-    matrix_col = len(dna_matrix1[0])
+    matrix_row, matrix_col, _ = dna_matrix1.shape
     # Складываем ДНК основания по правилам
     dna_encoded_matrix = np.empty((matrix_row, matrix_col, 3), dtype=object)
     for i in range(matrix_row):
@@ -111,8 +107,7 @@ def dna_diffusion_reverse(dna_matrix1, dna_matrix2):
 
 
 def dna_xor_diffusion(dna_matrix1, dna_matrix2):
-    matrix_row = len(dna_matrix1)
-    matrix_col = len(dna_matrix1[0])
+    matrix_row, matrix_col, _ = dna_matrix1.shape
     # Складываем ДНК основания по правилам
     dna_encoded_image = np.empty((matrix_row, matrix_col, 3), dtype=object)
     for i in range(matrix_row):

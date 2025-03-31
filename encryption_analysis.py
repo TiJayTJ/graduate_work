@@ -1,9 +1,12 @@
+import math
+
 import numpy as np
 from matplotlib import pyplot as plt
 
 from encrypt_decrypt import encrypt_image, decrypt_image
 
 
+# ---------------------------------------------------------------------------------------------
 def histogram_analise(image, encoded_image):
     # Строим гистограммы
     plt.figure(figsize=(15, 3))
@@ -40,7 +43,8 @@ def histogram_analise(image, encoded_image):
     plt.show()
 
 
-def analise_key_sensitivity(image_array, initial_state12):
+# ---------------------------------------------------------------------------------------------
+def analyse_key_sensitivity(image_array, initial_state12):
     img_col, img_row, _ = image_array.shape
     encrypted_image = encrypt_image(image_array, initial_state12)
     decrypted_images = np.empty((3, img_row, img_col, 3), dtype=np.uint8)
@@ -80,3 +84,102 @@ def analise_key_sensitivity(image_array, initial_state12):
     axes[1][2].set_title("Расшифрованное изображение, исходный ключ")
 
     plt.show()
+
+
+# ---------------------------------------------------------------------------------------------
+def g_func(x):
+    n = len(x)
+    return sum(x) / n
+
+
+def f_func(x, g_func_x):
+    n = len(x)
+    return sum((xi - g_func_x)**2 for xi in x) / n
+
+
+def cov_func(x, y, g_func_x, g_func_y):
+    n = len(x)
+    return sum((xi - g_func_x) * (yi - g_func_y) for xi, yi in zip(x, y)) / n
+
+
+def correlation_coef(x, y):
+    g_func_x = g_func(x)
+    g_func_y = g_func(y)
+    return cov_func(x, y, g_func_x, g_func_y) / (f_func(x, g_func_x) * f_func(y, g_func_y)) ** 0.5
+
+
+def analyse_correlation(image_array):
+    # Split channels
+    r_channel, g_channel, b_channel = (image_array[:, :, 0],
+                                       image_array[:, :, 1],
+                                       image_array[:, :, 2])
+    channels = [r_channel, g_channel, b_channel]
+    colors = ['r', 'g', 'b']
+
+    # Строим гистограммы
+    fig = plt.figure(figsize=(20, 5))
+
+    # Показываем исходное изображение
+    plt.subplot(1, 4, 1)
+    plt.imshow(image_array)
+    plt.axis('off')
+
+    # Correlation analysis
+    for idx, (channel, color) in enumerate(zip(channels, colors)):
+        # Get pixel values and adjacent pixel values in three directions
+        h_adj = channel[:, :-1].flatten(), channel[:, 1:].flatten()
+        v_adj = channel[:-1, :].flatten(), channel[1:, :].flatten()
+        d_adj = channel[:-1, :-1].flatten(), channel[1:, 1:].flatten()
+
+        # Вычисляем коэффициенты корреляции
+        h_correlation = correlation_coef(h_adj[0], h_adj[1])
+        v_correlation = correlation_coef(v_adj[0], v_adj[1])
+        d_correlation = correlation_coef(d_adj[0], d_adj[1])
+        print(f"Цвет {color}:")
+        print('(Посчитанные вручную)')
+        print(f"h:\t", h_correlation)
+        print(f"v:\t", v_correlation)
+        print(f"d:\t", d_correlation)
+        print('(Точные)')
+        print(f"h:\t", np.corrcoef(h_adj[0], h_adj[1])[0, 1])
+        print(f"h:\t", np.corrcoef(v_adj[0], v_adj[1])[0, 1])
+        print(f"h:\t", np.corrcoef(d_adj[0], d_adj[1])[0, 1])
+
+        pixel_values = np.concatenate([h_adj[0], v_adj[0], d_adj[0]])
+        adjacent_values = np.concatenate([h_adj[1], v_adj[1], d_adj[1]])
+        directions = np.concatenate([np.zeros_like(h_adj[0]), np.ones_like(v_adj[0]), 2 * np.ones_like(d_adj[0])])
+
+        # 3D Scatter plot
+        ax = fig.add_subplot(1, 4, idx + 2, projection='3d')
+        ax.scatter(directions, pixel_values, adjacent_values, c=color, s=0.2)
+        ax.set_xlabel('Направление')
+        ax.set_ylabel('Значение пикселя')
+        ax.set_zlabel('Значение соседнего пикселя')
+        ax.set_title(f'Корреляция {color.upper()}-канала')
+
+    plt.show()
+
+
+def information_entropy(x):
+    image_array = np.array(x)
+
+    # Строим гистограмму
+    hist = np.bincount(image_array.flatten(), minlength=256)
+    probs = hist / np.sum(hist)  # Нормируем, чтобы получить вероятности
+
+    # Вычисляем энтропию (игнорируем нулевые вероятности)
+    entropy = -np.sum(probs[probs > 0] * np.log2(probs[probs > 0]))
+    return entropy
+
+
+def analysis_information_entropy(image_array):
+    # Split channels
+    r_channel, g_channel, b_channel = (image_array[:, :, 0],
+                                       image_array[:, :, 1],
+                                       image_array[:, :, 2])
+    information_entropies = [information_entropy(r_channel[:, :].flatten()),
+                             information_entropy(g_channel[:, :].flatten()),
+                             information_entropy(b_channel[:, :].flatten())]
+    color = ['red', 'green', 'blue']
+    for i in range(3):
+        print(f'Цвет: {color[i]}, Значение энтропии: {information_entropies[i]}')

@@ -7,7 +7,7 @@ from system import main_system
 
 
 def encrypt_image(image_array, initial_state12):
-    img_col, img_row, _ = image_array.shape
+    img_row, img_col, _ = image_array.shape
 
     initial_state1 = initial_state12[:3]    # Начальнные данные
     initial_state2 = initial_state12[3:]    #
@@ -52,14 +52,10 @@ def encrypt_image(image_array, initial_state12):
 
 
 def decrypt_image(encoded_image, initial_state12):
-    img_col, img_row, _ = encoded_image.shape
+    img_row, img_col, _ = encoded_image.shape
 
     initial_state1 = initial_state12[:3]  # Начальнные данные
     initial_state2 = initial_state12[3:]  #
-
-    print('Начальные данные')
-    print(initial_state1)
-    print(initial_state2)
 
     solution1 = solve_ivp(
         main_system, [0, 1200], initial_state1, t_eval=np.linspace(1000, 1200, img_col * img_row)

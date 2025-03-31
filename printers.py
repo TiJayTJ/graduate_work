@@ -49,7 +49,7 @@ def print_phase_space(x_t_valuesdop, y_t_valuesdop, z_t_valuesdop):
     plt.show()
 
 
-def print_three_img(image, encoded_image, unmixed_matrix):
+def print_encryption_result(image, encoded_image, unmixed_matrix):
     # Создание фигуры и осей
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
