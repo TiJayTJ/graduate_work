@@ -6,7 +6,8 @@ from skimage import data
 from matplotlib import pyplot as plt
 
 from encrypt_decrypt import encrypt_image, decrypt_image
-from encryption_analysis import histogram_analise, analyse_correlation, analysis_information_entropy
+from encryption_analysis import histogram_analise, analyse_correlation, analysis_information_entropy, \
+    analyse_noise_attacks, analyse_cropping_attacks
 from printers import print_encryption_result, print_image
 from system import get_initial_state
 
@@ -42,6 +43,14 @@ encrypted_image = encrypt_image(image_array, initial_state12)
 # print('Информационная энтропия зашифрованного изображения:')
 # analysis_information_entropy(encrypted_image)
 # print()
+
+noised_image = analyse_noise_attacks(encrypted_image, 0.15)
+noised_decryted_image = decrypt_image(noised_image, initial_state12)
+print_encryption_result(image_array, noised_image, noised_decryted_image)
+
+# cropped_image = analyse_cropping_attacks(encrypted_image, 25)
+# cropped_decryted_image = decrypt_image(cropped_image, initial_state12)
+# print_encryption_result(image_array, cropped_image, cropped_decryted_image)
 
 # --------------------------------- Дешифровка ---------------------------------
 

@@ -4,6 +4,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from encrypt_decrypt import encrypt_image, decrypt_image
+from matrix import array_to_matrix
+from printers import print_image
 
 
 # ---------------------------------------------------------------------------------------------
@@ -183,3 +185,24 @@ def analysis_information_entropy(image_array):
     color = ['red', 'green', 'blue']
     for i in range(3):
         print(f'Цвет: {color[i]}, Значение энтропии: {information_entropies[i]}')
+
+
+def analyse_noise_attacks(image_array, intensity):
+    row, col, high = image_array.shape
+    noise = array_to_matrix(np.random.normal(0, 255 * intensity, row * col), row, col)
+    noise_image = np.empty((row, col, high), dtype=np.uint8)
+    for i in range(high):
+        noise_image[:, :, i] = image_array[:, :, i] + noise
+
+    return noise_image
+
+
+def analyse_cropping_attacks(image_array, intensity):
+    row, col, high = image_array.shape
+
+    for i in range(round(row * intensity * 2 / 100)):
+        for j in range(round(col * intensity * 2 / 100)):
+            for k in range(high):
+                image_array[i, j, k] = 0
+
+    return image_array

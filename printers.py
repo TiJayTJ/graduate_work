@@ -63,8 +63,9 @@ def print_encryption_result(image, encoded_image, unmixed_matrix):
 
     axes[2].imshow(unmixed_matrix)
     axes[2].axis("off")
-    axes[2].set_title("Восстановленное изображение из ДНК")
+    axes[2].set_title("Восстановленное изображение")
     plt.show()
+
 
 def print_image(image, title):
     plt.imshow(image)
