@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 
 from dna import uint8_matrix_to_dna, dna_diffusion, dna_xor_diffusion, dna_matrix_to_uint8, dna_diffusion_reverse
-from matrix import mix_matrix, unmix_matrix
+from matrix import mix_matrix, unmix_matrix, mix_image, unmix_image
 from system import main_system
 
 
@@ -15,10 +15,11 @@ def convert_for_encrypt(array, n, m):
     z_val_converted = z_val[:n*m]
 
     # Преобразования решения в матрицу
+    p = 10
     for i in range(n*m):
-        x_val_converted[i] = int(x_val_converted[i] * 10**5) % 256
-        y_val_converted[i] = int(y_val_converted[i] * 10**5) % 256
-        z_val_converted[i] = int(z_val_converted[i] * 10**5) % 256
+        x_val_converted[i] = int(x_val_converted[i] * 10**p) % 256
+        y_val_converted[i] = int(y_val_converted[i] * 10**p) % 256
+        z_val_converted[i] = int(z_val_converted[i] * 10**p) % 256
 
     matrix = np.empty((n, m, 3), dtype=np.uint8)
     for i in range(n*m):
@@ -36,14 +37,11 @@ def encrypt_image(image_array, initial_state12):
     initial_state2 = initial_state12[3:]    #
 
     solution1 = solve_ivp(
-        main_system, [0, 1200], initial_state1, t_eval=np.linspace(1000, 1200, img_col * img_row)
+        main_system, [0, 200], initial_state1, t_eval=np.linspace(100, 200, img_col * img_row)
     )
     solution2 = solve_ivp(
-        main_system, [0, 1200], initial_state2, t_eval=np.linspace(1000, 1200, img_col * img_row)
+        main_system, [0, 200], initial_state2, t_eval=np.linspace(100, 200, img_col * img_row)
     )
-
-    # print_phase_space(solution1.y[0], solution1.y[1], solution1.y[2])
-    # print_phase_space(solution2.y[0], solution2.y[1], solution2.y[2])
 
     # Вычисление корреляционной размерности
     # dimension = corr_dim(np.array(solution1.y[0]), emb_dim=3)
@@ -54,7 +52,7 @@ def encrypt_image(image_array, initial_state12):
     matrix_b = convert_for_encrypt(solution2.y, img_row, img_col)
 
     # Применяем метод ротационного арифметичесского извлечения
-    mixed_matrix = mix_matrix(image_array)
+    mixed_matrix = mix_image(image_array)
     # print_image(mixed_matrix, "Перемешанное изображение")
 
     # Применение ДНК кодирование для изображения и матрицы
@@ -77,10 +75,10 @@ def decrypt_image(encoded_image, initial_state12):
     initial_state2 = initial_state12[3:]  #
 
     solution1 = solve_ivp(
-        main_system, [0, 1200], initial_state1, t_eval=np.linspace(1000, 1200, img_col * img_row)
+        main_system, [0, 200], initial_state1, t_eval=np.linspace(100, 200, img_col * img_row)
     )
     solution2 = solve_ivp(
-        main_system, [0, 1200], initial_state2, t_eval=np.linspace(1000, 1200, img_col * img_row)
+        main_system, [0, 200], initial_state2, t_eval=np.linspace(100, 200, img_col * img_row)
     )
 
     # Получаем матрицы для шифрования изображения
@@ -100,5 +98,5 @@ def decrypt_image(encoded_image, initial_state12):
     binary_image = dna_matrix_to_uint8(dna_encoded_image)
 
     # Применяем обратный метод ротационного арифметичесского извлечения
-    unmixed_matrix = unmix_matrix(binary_image)
+    unmixed_matrix = unmix_image(binary_image)
     return unmixed_matrix

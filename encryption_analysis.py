@@ -58,7 +58,7 @@ def analyse_key_sensitivity(image_array, initial_state12):
         decrypted_images[i] = decrypt_image(encrypted_image, new_initial_state)
     decrypted_image = decrypt_image(encrypted_image, initial_state12)
 
-    # Создание фигуры и осей
+    # Вывод
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
 
     axes[0][0].imshow(image_array)
@@ -111,7 +111,7 @@ def correlation_coef(x, y):
 
 
 def analyse_correlation(image_array):
-    # Split channels
+    # Разделяем каналы
     r_channel, g_channel, b_channel = (image_array[:, :, 0],
                                        image_array[:, :, 1],
                                        image_array[:, :, 2])
@@ -126,9 +126,8 @@ def analyse_correlation(image_array):
     plt.imshow(image_array)
     plt.axis('off')
 
-    # Correlation analysis
     for idx, (channel, color) in enumerate(zip(channels, colors)):
-        # Get pixel values and adjacent pixel values in three directions
+        # Создаём пары из пикселя и его соседей (верхний, правый, верхне-правый)
         h_adj = channel[:, :-1].flatten(), channel[:, 1:].flatten()
         v_adj = channel[:-1, :].flatten(), channel[1:, :].flatten()
         d_adj = channel[:-1, :-1].flatten(), channel[1:, 1:].flatten()
@@ -138,11 +137,11 @@ def analyse_correlation(image_array):
         v_correlation = correlation_coef(v_adj[0], v_adj[1])
         d_correlation = correlation_coef(d_adj[0], d_adj[1])
         print(f"Цвет {color}:")
-        print('(Посчитанные вручную)')
-        print(f"h:\t", h_correlation)
-        print(f"v:\t", v_correlation)
-        print(f"d:\t", d_correlation)
-        print('(Точные)')
+        # print('(Посчитанные вручную)')
+        # print(f"h:\t", h_correlation)
+        # print(f"v:\t", v_correlation)
+        # print(f"d:\t", d_correlation)
+        # print('(Точные)')
         print(f"h:\t", np.corrcoef(h_adj[0], h_adj[1])[0, 1])
         print(f"h:\t", np.corrcoef(v_adj[0], v_adj[1])[0, 1])
         print(f"h:\t", np.corrcoef(d_adj[0], d_adj[1])[0, 1])
@@ -151,7 +150,7 @@ def analyse_correlation(image_array):
         adjacent_values = np.concatenate([h_adj[1], v_adj[1], d_adj[1]])
         directions = np.concatenate([np.zeros_like(h_adj[0]), np.ones_like(v_adj[0]), 2 * np.ones_like(d_adj[0])])
 
-        # 3D Scatter plot
+        # Вывод
         ax = fig.add_subplot(1, 4, idx + 2, projection='3d')
         ax.scatter(directions, pixel_values, adjacent_values, c=color, s=0.2)
         ax.set_xlabel('Направление')
@@ -162,6 +161,7 @@ def analyse_correlation(image_array):
     plt.show()
 
 
+# ---------------------------------------------------------------------------------------------
 def information_entropy(x):
     image_array = np.array(x)
 
@@ -175,7 +175,7 @@ def information_entropy(x):
 
 
 def analysis_information_entropy(image_array):
-    # Split channels
+    # Разделяем каналы
     r_channel, g_channel, b_channel = (image_array[:, :, 0],
                                        image_array[:, :, 1],
                                        image_array[:, :, 2])
@@ -187,6 +187,7 @@ def analysis_information_entropy(image_array):
         print(f'Цвет: {color[i]}, Значение энтропии: {information_entropies[i]}')
 
 
+# ---------------------------------------------------------------------------------------------
 def analyse_noise_attacks(image_array, intensity):
     row, col, high = image_array.shape
     noise = array_to_matrix(np.random.normal(0, 255 * intensity, row * col), row, col)
