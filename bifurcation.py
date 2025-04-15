@@ -3,9 +3,9 @@ from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 
 # Определение системы уравнений
-def system(t, state, a_param):
+def system(t, state, a):
     x, y, z = state
-    dxdt = y - a_param * x + y * z
+    dxdt = y - a * x + y * z
     dydt = 30 * x - 3 * y - x * z
     dzdt = -3.5 * z + x * y + x**2
     return [dxdt, dydt, dzdt]
@@ -33,6 +33,6 @@ plt.figure(figsize=(10, 6))
 plt.scatter(param_data, y_data, s=0.1, color='blue')
 plt.title('Bifurcation Diagram for Parameter b')
 plt.xlabel('b')
-plt.ylabel('|y| where x=y')
+plt.ylabel('|x|', rotation=0)
 plt.grid()
 plt.show()

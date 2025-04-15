@@ -24,16 +24,20 @@ def dna_to_byte(dna):
     return int(binary_str, 2)  # Переводим в десятичное значение
 
 
-def uint8_matrix_to_dna(matrix):
-    matrix_row, matrix_col, _ = matrix.shape
-    dna_matrix = np.empty((matrix_row, matrix_col, 3), dtype=object)
+def uint8_matrix_to_dna(matrix1, matrix2, matrix3):
+    matrix_row, matrix_col, matrix_hight = matrix1.shape
+    dna_matrix1 = np.empty((matrix_row, matrix_col, 3), dtype=object)
+    dna_matrix2 = np.empty((matrix_row, matrix_col, 3), dtype=object)
+    dna_matrix3 = np.empty((matrix_row, matrix_col, 3), dtype=object)
 
     for i in range(matrix_row):
         for j in range(matrix_col):
             for k in range(3):
-                dna_matrix[i, j, k] = byte_to_dna(matrix[i, j, k])
+                dna_matrix1[i, j, k] = byte_to_dna(matrix1[i, j, k])
+                dna_matrix2[i, j, k] = byte_to_dna(matrix2[i, j, k])
+                dna_matrix3[i, j, k] = byte_to_dna(matrix3[i, j, k])
 
-    return dna_matrix
+    return dna_matrix1, dna_matrix2, dna_matrix3
 
 
 def dna_matrix_to_uint8(matrix):
@@ -109,11 +113,10 @@ def dna_diffusion_reverse(dna_matrix1, dna_matrix2):
 def dna_xor_diffusion(dna_matrix1, dna_matrix2):
     matrix_row, matrix_col, _ = dna_matrix1.shape
     # Складываем ДНК основания по правилам
-    dna_encoded_image = np.empty((matrix_row, matrix_col, 3), dtype=object)
     for i in range(matrix_row):
         for j in range(matrix_col):
-            dna_encoded_image[i, j, 0] = dna_xor(dna_matrix1[i, j, 0], dna_matrix2[i, j, 0])
-            dna_encoded_image[i, j, 1] = dna_xor(dna_matrix1[i, j, 1], dna_matrix2[i, j, 1])
-            dna_encoded_image[i, j, 2] = dna_xor(dna_matrix1[i, j, 2], dna_matrix2[i, j, 2])
+            dna_matrix1[i, j, 0] = dna_xor(dna_matrix1[i, j, 0], dna_matrix2[i, j, 0])
+            dna_matrix1[i, j, 1] = dna_xor(dna_matrix1[i, j, 1], dna_matrix2[i, j, 1])
+            dna_matrix1[i, j, 2] = dna_xor(dna_matrix1[i, j, 2], dna_matrix2[i, j, 2])
 
-    return dna_encoded_image
+    return dna_matrix1

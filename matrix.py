@@ -19,10 +19,11 @@ def mix_matrix(matrix):
         counter = 0
         for i in range(row_half):
             for j in range(i, m - i - 1):
-                mixed_matrix[((counter * 2) // n) * 2][(counter * 2) % n][k] = matrix[i][j][k]
-                mixed_matrix[((counter * 2) // n) * 2][(counter * 2) % n + 1][k] = matrix[j][n - i - 1][(k + 1) % 3]
-                mixed_matrix[((counter * 2) // n) * 2 + 1][(counter * 2) % n + 1][k] = matrix[n - i - 1][n - j - 1][(k + 2) % 3]
-                mixed_matrix[((counter * 2) // n) * 2 + 1][(counter * 2) % n][k] = matrix[n - j - 1][i][k]
+                counter_2_div_n = ((counter * 2) // n) * 2
+                mixed_matrix[counter_2_div_n][(counter * 2) % n][k] = matrix[i][j][k]
+                mixed_matrix[counter_2_div_n][(counter * 2) % n + 1][k] = matrix[j][n - i - 1][(k + 1) % 3]
+                mixed_matrix[counter_2_div_n + 1][(counter * 2) % n + 1][k] = matrix[n - i - 1][n - j - 1][(k + 2) % 3]
+                mixed_matrix[counter_2_div_n + 1][(counter * 2) % n][k] = matrix[n - j - 1][i][k]
                 counter += 1
     return mixed_matrix
 

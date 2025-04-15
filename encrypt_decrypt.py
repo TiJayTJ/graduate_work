@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 from scipy.integrate import solve_ivp
 
@@ -31,6 +33,7 @@ def convert_for_encrypt(array, n, m):
 
 
 def encrypt_image(image_array, initial_state12):
+    time1 = time.time()
     img_row, img_col, _ = image_array.shape
 
     initial_state1 = initial_state12[:3]    # Начальнные данные
@@ -42,7 +45,7 @@ def encrypt_image(image_array, initial_state12):
     solution2 = solve_ivp(
         main_system, [0, 200], initial_state2, t_eval=np.linspace(100, 200, img_col * img_row)
     )
-
+    time2 = time.time()
     # Вычисление корреляционной размерности
     # dimension = corr_dim(np.array(solution1.y[0]), emb_dim=3)
     # print(f"Корреляционная размерность: {dimension}")
@@ -50,22 +53,32 @@ def encrypt_image(image_array, initial_state12):
     # Получаем матрицы для шифрования изображения
     matrix_a = convert_for_encrypt(solution1.y, img_row, img_col)
     matrix_b = convert_for_encrypt(solution2.y, img_row, img_col)
-
+    time3 = time.time()
     # Применяем метод ротационного арифметичесского извлечения
-    mixed_matrix = mix_image(image_array)
+    mixed_matrix = mix_matrix(image_array)
     # print_image(mixed_matrix, "Перемешанное изображение")
-
+    time4 = time.time()
     # Применение ДНК кодирование для изображения и матрицы
-    dna_image = uint8_matrix_to_dna(mixed_matrix)
-    dna_matrix_a = uint8_matrix_to_dna(matrix_a)
-    dna_matrix_b = uint8_matrix_to_dna(matrix_b)
 
+    dna_image, dna_matrix_a, dna_matrix_b = uint8_matrix_to_dna(mixed_matrix, matrix_a, matrix_b)
+    time5 = time.time()
     # Применяем диффузию между изображением и матрицей
     dna_encoded_image = dna_diffusion(dna_image, dna_matrix_a)
+    time6 = time.time()
     dna_encoded_image = dna_xor_diffusion(dna_encoded_image, dna_matrix_b)
-
+    time7 = time.time()
     # Преобразуем ДНК код обратно в байты
-    return dna_matrix_to_uint8(dna_encoded_image)
+    result = dna_matrix_to_uint8(dna_encoded_image)
+    time8 = time.time()
+
+    print(f'Решение ДС: {time2 - time1:.4f} секунд')
+    print(f'Получаем матрицы для шифрования изображения: {time3 - time2:.4f} секунд')
+    print(f'Перемешиваем матрицы: {time4 - time3:.4f} секунд')
+    print(f'ДНК кодирование: {time5 - time4:.4f} секунд')
+    print(f'Диффузия1: {time6 - time5:.4f} секунд')
+    print(f'Диффузия2: {time7 - time6:.4f} секунд')
+    print(f'Обратное ДНК кодирование: {time8 - time7:.4f} секунд')
+    return result
 
 
 def decrypt_image(encoded_image, initial_state12):
@@ -86,9 +99,7 @@ def decrypt_image(encoded_image, initial_state12):
     matrix_b = convert_for_encrypt(solution2.y, img_row, img_col)
 
     # Применение ДНК кодирование для изображения и матрицы
-    dna_image = uint8_matrix_to_dna(encoded_image)
-    dna_matrix_a = uint8_matrix_to_dna(matrix_a)
-    dna_matrix_b = uint8_matrix_to_dna(matrix_b)
+    dna_image, dna_matrix_a, dna_matrix_b = uint8_matrix_to_dna(encoded_image, matrix_a, matrix_b)
 
     # Применяем диффузию между изображением и матрицей
     dna_encoded_image = dna_xor_diffusion(dna_image, dna_matrix_b)
@@ -98,5 +109,5 @@ def decrypt_image(encoded_image, initial_state12):
     binary_image = dna_matrix_to_uint8(dna_encoded_image)
 
     # Применяем обратный метод ротационного арифметичесского извлечения
-    unmixed_matrix = unmix_image(binary_image)
+    unmixed_matrix = unmix_matrix(binary_image)
     return unmixed_matrix

@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 from PIL import Image
 from scipy.integrate import solve_ivp
@@ -34,7 +36,9 @@ img_row, img_col, _ = image_array.shape
 # Решение системы
 initial_state12 = get_initial_state(image_array)    # Начальные условия
 
+start_time = time.time()
 encrypted_image = encrypt_image(image_array, initial_state12)
+print(f"\nОбщее время выполнения кодирования: {time.time() - start_time:.4f} секунд")
 
 # --------------------------------- Численныйт анализ ---------------------------------
 
@@ -46,11 +50,11 @@ encrypted_image = encrypt_image(image_array, initial_state12)
 
 # Корреляция
 
-# print('Коэффициенты корреляции исходного изображения')
-# analyse_correlation(image_array)
-# print('\n-------------------------------------------------------------------------------\n')
-# print('Коэффициенты корреляции зашифрованного изображения')
-# analyse_correlation(encrypted_image)
+print('Коэффициенты корреляции исходного изображения')
+analyse_correlation(image_array)
+print('\n-------------------------------------------------------------------------------\n')
+print('Коэффициенты корреляции зашифрованного изображения')
+analyse_correlation(encrypted_image)
 
 # Информационная энтропия
 
@@ -63,9 +67,9 @@ encrypted_image = encrypt_image(image_array, initial_state12)
 
 # Шумовые атаки
 
-noised_image = analyse_noise_attacks(encrypted_image, 0.2)
-noised_decryted_image = decrypt_image(noised_image, initial_state12)
-print_encryption_result(image_array, noised_image, noised_decryted_image)
+# noised_image = analyse_noise_attacks(encrypted_image, 0.2)
+# noised_decryted_image = decrypt_image(noised_image, initial_state12)
+# print_encryption_result(image_array, noised_image, noised_decryted_image)
 
 # Атаки с обрезкой
 
@@ -75,8 +79,8 @@ print_encryption_result(image_array, noised_image, noised_decryted_image)
 
 # --------------------------------- Дешифровка ---------------------------------
 
-# decrypted_image = decrypt_image(encrypted_image, initial_state12)
+decrypted_image = decrypt_image(encrypted_image, initial_state12)
 
 # --------------------------------- Вывод изображений ---------------------------------
 
-# print_encryption_result(image_array, encrypted_image, decrypted_image)
+print_encryption_result(image_array, encrypted_image, decrypted_image)

@@ -7,7 +7,7 @@ from system import main_system
 
 N = 20000
 t = np.linspace(0, 100, N)
-x0_y0_z0 = [1.0, 1.0, 1.0]
+x0_y0_z0 = [1.0, 2.0, 10.0]
 
 # x0_start, y0_start, z0_start = 1, 1, 1
 # koefs = [9, 30, 3.5, 3]

@@ -127,7 +127,7 @@ def analyse_correlation(image_array):
     plt.axis('off')
 
     for idx, (channel, color) in enumerate(zip(channels, colors)):
-        # Создаём пары из пикселя и его соседей (верхний, правый, верхне-правый)
+        # Создаём пары из пикселя и его соседей (правый, верхний, верхне-правый)
         h_adj = channel[:, :-1].flatten(), channel[:, 1:].flatten()
         v_adj = channel[:-1, :].flatten(), channel[1:, :].flatten()
         d_adj = channel[:-1, :-1].flatten(), channel[1:, 1:].flatten()
@@ -143,8 +143,8 @@ def analyse_correlation(image_array):
         # print(f"d:\t", d_correlation)
         # print('(Точные)')
         print(f"h:\t", np.corrcoef(h_adj[0], h_adj[1])[0, 1])
-        print(f"h:\t", np.corrcoef(v_adj[0], v_adj[1])[0, 1])
-        print(f"h:\t", np.corrcoef(d_adj[0], d_adj[1])[0, 1])
+        print(f"v:\t", np.corrcoef(v_adj[0], v_adj[1])[0, 1])
+        print(f"d:\t", np.corrcoef(d_adj[0], d_adj[1])[0, 1])
 
         pixel_values = np.concatenate([h_adj[0], v_adj[0], d_adj[0]])
         adjacent_values = np.concatenate([h_adj[1], v_adj[1], d_adj[1]])
@@ -158,7 +158,7 @@ def analyse_correlation(image_array):
         ax.set_zlabel('Значение соседнего пикселя')
         ax.set_title(f'Корреляция {color.upper()}-канала')
 
-    plt.show()
+    # plt.show()
 
 
 # ---------------------------------------------------------------------------------------------

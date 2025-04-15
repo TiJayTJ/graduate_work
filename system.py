@@ -1,6 +1,7 @@
 import hashlib
 
 import numpy as np
+from scipy.optimize import fsolve
 
 
 def main_system(t, state):
@@ -14,6 +15,14 @@ def main_system(t, state):
     # dydt = x*(28-z) - y
     # dzdt = x*y-8/3*z
     # return [dxdt, dydt, dzdt]
+
+
+def main_system_without_t(state):
+    x, y, z = state
+    dxdt = y - 9 * x + y * z
+    dydt = 30 * x - 3 * y - x * z
+    dzdt = -3.5 * z + x * y + x ** 2
+    return [dxdt, dydt, dzdt]
 
 
 def system_built(koefs):
@@ -30,6 +39,16 @@ def system_built(koefs):
 
 
 def main_jacobian(state, t):
+    x, y, z = state
+    J = np.array([
+        [-9, 1 + z, y],
+        [30 - z, -3, -x],
+        [y + 2 * x, x, -3.5]
+    ])
+    return J
+
+
+def main_jacobian(state):
     x, y, z = state
     J = np.array([
         [-9, 1 + z, y],
@@ -75,3 +94,15 @@ def get_initial_state(image):
         h_sum = round(int(h_sum / 10) / 256, 2)
         keys[i] = h_sum
     return keys
+
+
+def calc_equilibrium_points(main_system_without_t):
+    # Пробуем разные начальные приближения
+    initial_guesses = [
+        (0, 0, 0),
+        (-8.85530449, -2.64749439, 29.10308187),
+        (3, 1, 30)
+    ]
+
+    solutions = [fsolve(main_system_without_t, guess) for guess in initial_guesses]
+    return solutions
