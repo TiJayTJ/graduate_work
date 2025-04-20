@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 from encrypt_decrypt import encrypt_image, decrypt_image
 from encryption_analysis import histogram_analise, analyse_correlation, analysis_information_entropy, \
-    analyse_noise_attacks, analyse_cropping_attacks
+    analyse_noise_attacks, analyse_cropping_attacks, analyse_key_sensitivity
 from matrix import mix_block_matrix, make_block_matrix, remake_block_matrix, mix_matrix, unmix_block_matrix
 from printers import print_encryption_result, print_image
 from system import get_initial_state
@@ -46,15 +46,15 @@ print(f"\nОбщее время выполнения кодирования: {ti
 # histogram_analise(image_array, encrypted_image)
 
 # Чувствительность ключа
-# analise_key_sensitivity(image_array, initial_state12)
+# analyse_key_sensitivity(image_array, initial_state12)
 
 # Корреляция
 
-print('Коэффициенты корреляции исходного изображения')
-analyse_correlation(image_array)
-print('\n-------------------------------------------------------------------------------\n')
-print('Коэффициенты корреляции зашифрованного изображения')
-analyse_correlation(encrypted_image)
+# print('Коэффициенты корреляции исходного изображения')
+# analyse_correlation(image_array)
+# print('\n-------------------------------------------------------------------------------\n')
+# print('Коэффициенты корреляции зашифрованного изображения')
+# analyse_correlation(encrypted_image)
 
 # Информационная энтропия
 

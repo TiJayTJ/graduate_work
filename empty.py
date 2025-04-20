@@ -1,15 +1,21 @@
 import hashlib
+import time
 
 import numpy as np
 from PIL import Image
 from scipy.integrate import solve_ivp
-from scipy.stats import pearsonr
-from matplotlib import pyplot as plt
+from skimage import data
+from numba import njit
 
 from encrypt_decrypt import decrypt_image
-from encryption_analysis import histogram_analise, analyse_correlation, analysis_information_entropy, \
-    analyse_noise_attacks, analyse_cropping_attacks
-from printers import print_encryption_result, print_image
+from printers import print_encryption_result
+
+# Загружаем изображение
+astronaut = data.astronaut()
+lena = Image.open("images/lena.png")
+baboon = Image.open("images/baboon.png")
+image_array = np.array(lena)
+img_row, img_col, _ = image_array.shape
 
 
 def sha512hash(text):
@@ -45,23 +51,18 @@ def main_system(t, state):
 def convert_for_encrypt(array, n, m):
     x_val, y_val, z_val = array
 
-    # Подгоняем размер под изображение
-    x_val_converted = x_val[:n*m]
-    y_val_converted = y_val[:n*m]
-    z_val_converted = z_val[:n*m]
-
     # Преобразования решения в матрицу
-    p = 5
-    for i in range(n*m):
-        x_val_converted[i] = int(x_val_converted[i] * 10**p) % 256
-        y_val_converted[i] = int(y_val_converted[i] * 10**p) % 256
-        z_val_converted[i] = int(z_val_converted[i] * 10**p) % 256
+    p = 10
+    scale_mod = lambda arr: (arr[:n * m] * 10 ** p).astype(int) % 256
+    x_val_converted = scale_mod(x_val)
+    y_val_converted = scale_mod(y_val)
+    z_val_converted = scale_mod(z_val)
 
-    matrix = np.empty((n, m, 3), dtype=np.uint8)
-    for i in range(n*m):
-        matrix[i // m][i % m][0] = x_val_converted[i]
-        matrix[i // m][i % m][1] = y_val_converted[i]
-        matrix[i // m][i % m][2] = z_val_converted[i]
+    matrix = np.stack([
+        x_val_converted.reshape((n, m)),
+        y_val_converted.reshape((n, m)),
+        z_val_converted.reshape((n, m))
+    ], axis=-1).astype(np.uint8)
 
     return matrix
 
@@ -77,136 +78,155 @@ def mix_matrix(matrix):
         counter = 0
         for i in range(row_half):
             for j in range(i, m - i - 1):
-                mixed_matrix[((counter * 2) // n) * 2][(counter * 2) % n][k] = matrix[i][j][k]
-                mixed_matrix[((counter * 2) // n) * 2][(counter * 2) % n + 1][k] = matrix[j][n - i - 1][(k + 1) % 3]
-                mixed_matrix[((counter * 2) // n) * 2 + 1][(counter * 2) % n + 1][k] = matrix[n - i - 1][n - j - 1][(k + 2) % 3]
-                mixed_matrix[((counter * 2) // n) * 2 + 1][(counter * 2) % n][k] = matrix[n - j - 1][i][k]
+                counter_2_div_n = ((counter * 2) // n) * 2
+                mixed_matrix[counter_2_div_n][(counter * 2) % n][k] = matrix[i][j][k]
+                mixed_matrix[counter_2_div_n][(counter * 2) % n + 1][k] = matrix[j][n - i - 1][(k + 1) % 3]
+                mixed_matrix[counter_2_div_n + 1][(counter * 2) % n + 1][k] = matrix[n - i - 1][n - j - 1][(k + 2) % 3]
+                mixed_matrix[counter_2_div_n + 1][(counter * 2) % n][k] = matrix[n - j - 1][i][k]
                 counter += 1
     return mixed_matrix
 
 
-# Функция преобразования 2-битных пар в ДНК основания
-import numpy as np
+BITS_TO_DNA = {
+    0: "A",  # 00
+    1: "G",  # 01
+    2: "C",  # 10
+    3: "T"   # 11
+}
+
+DNA_TO_BITS = {
+    "A": 0b00,
+    "G": 0b01,
+    "C": 0b10,
+    "T": 0b11
+}
 
 
-def bits_to_dna(bits):
-    mapping = {"00": "A", "01": "G", "10": "C", "11": "T"}
-    return mapping[bits]
-
-
-# Функция преобразования ДНК основания в 2-битных пар
-def dna_to_bits(dna):
-    mapping = {"A": "00", "G": "01", "C": "10", "T": "11"}
-    return mapping[dna]
-
-
-# Функция разбиения байта (8 бит) на 4 пары битов и их преобразование в ДНК
 def byte_to_dna(byte):
-    binary_str = format(byte, "08b")  # Преобразуем байт в 8-битную строку
-    return [bits_to_dna(binary_str[i:i+2]) for i in range(0, 8, 2)]
+    byte = int(byte)  # Приводим np.uint8 к обычному int
+    return [BITS_TO_DNA[int((byte >> (6 - 2 * i)) & 0b11)] for i in range(4)]
 
 
 def dna_to_byte(dna):
-    binary_str = "".join([dna_to_bits(base) for base in dna])  # Соединяем 4 пары в 8-битное число
-    return int(binary_str, 2)  # Переводим в десятичное значение
+    return sum(DNA_TO_BITS[base] << (6 - 2 * i) for i, base in enumerate(dna))
 
 
-def uint8_matrix_to_dna(matrix):
-    matrix_row, matrix_col, _ = matrix.shape
-    dna_matrix = np.empty((matrix_row, matrix_col, 3), dtype=object)
+BITS_TO_DNA2 = np.array(["A", "G", "C", "T"])  # Индексация: 00 → A, 01 → G, 10 → C, 11 → T
 
-    for i in range(matrix_row):
-        for j in range(matrix_col):
-            for k in range(3):
-                dna_matrix[i, j, k] = byte_to_dna(matrix[i, j, k])
 
-    return dna_matrix
+def uint8_matrix_to_dna(matrix1, matrix2, matrix3):
+    def matrix_to_dna(matrix):
+        flat = matrix.reshape(-1)
+        # Получаем 4 пары битов для каждого байта
+        dna_bases = np.empty((flat.shape[0], 4), dtype=object)
+        for i in range(4):
+            shift = 6 - 2 * i
+            indices = (flat >> shift) & 0b11
+            dna_bases[:, i] = BITS_TO_DNA2[indices]
+        return dna_bases.reshape((*matrix.shape[:2], 3, 4))  # (H, W, 3, 4)
+
+    # Преобразуем каждую матрицу в ДНК представление
+    dna_matrix1 = matrix_to_dna(matrix1)
+    dna_matrix2 = matrix_to_dna(matrix2)
+    dna_matrix3 = matrix_to_dna(matrix3)
+
+    # Возвращаем как три отдельных матрицы
+    return dna_matrix1, dna_matrix2, dna_matrix3
 
 
 def dna_matrix_to_uint8(matrix):
-    matrix_row, matrix_col, _ = matrix.shape
-    dna_matrix = np.zeros((matrix_row, matrix_col, 3), dtype=np.uint8)
+    # Предполагаем, что matrix имеет форму (H, W, 3, 4), где 4 — количество ДНК-баз
+    dna_bytes = np.vectorize(lambda b: DNA_TO_BITS[b])(matrix)  # Преобразуем каждую букву в 2 бита
+    shifts = np.array([6, 4, 2, 0], dtype=np.uint8)
 
-    for i in range(matrix_row):
-        for j in range(matrix_col):
-            for k in range(3):  # R, G, B
-                dna_matrix[i, j, k] = dna_to_byte(matrix[i, j, k])
+    # Массив битов сдвигается и складывается по каждой строке (т.е. по 4 базам)
+    byte_values = np.sum(dna_bytes << shifts.reshape((1, 1, 1, 4)), axis=-1).astype(np.uint8)
 
-    return dna_matrix
+    return byte_values
 
 
-# Функция сложения оснований ДНК
+
+DNA_ADD_RULES = {
+    ("A", "A"): "A", ("A", "G"): "G", ("A", "C"): "C", ("A", "T"): "T",
+    ("G", "G"): "C", ("G", "C"): "T", ("G", "T"): "A",
+    ("C", "C"): "A", ("C", "T"): "G",
+    ("T", "T"): "C"
+}
+
+DNA_XOR_RULES = {
+    ("A", "A"): "A", ("A", "G"): "G", ("A", "C"): "C", ("A", "T"): "T",
+    ("G", "G"): "A", ("G", "C"): "T", ("G", "T"): "C",
+    ("C", "C"): "A", ("C", "T"): "G",
+    ("T", "T"): "A"
+}
+
+DNA_SUB_RULES = {
+    ("A", "A"): "A", ("A", "G"): "T", ("A", "C"): "C", ("A", "T"): "G",
+    ("G", "A"): "G", ("G", "G"): "A", ("G", "C"): "T", ("G", "T"): "C",
+    ("C", "A"): "C", ("C", "G"): "G", ("C", "C"): "A", ("C", "T"): "T",
+    ("T", "A"): "T", ("T", "G"): "C", ("T", "C"): "G", ("T", "T"): "A"
+}
+
+
+def apply_dna_rule(rule_dict, base1, base2):
+    return [rule_dict.get((b1, b2)) or rule_dict.get((b2, b1)) for b1, b2 in zip(base1, base2)]
+
+
 def dna_add(base1, base2):
-    addition_rules = {
-        ("A", "A"): "A", ("A", "G"): "G", ("A", "C"): "C", ("A", "T"): "T",
-        ("G", "G"): "C", ("G", "C"): "T", ("G", "T"): "A",
-        ("C", "C"): "A", ("C", "T"): "G",
-        ("T", "T"): "C"
-    }
-    return [addition_rules.get((base1[i], base2[i])) or addition_rules.get((base2[i], base1[i])) for i in range(4)]
+    return apply_dna_rule(DNA_ADD_RULES, base1, base2)
 
 
-# Функция xor оснований ДНК
 def dna_xor(base1, base2):
-    addition_rules = {
-        ("A", "A"): "A", ("A", "G"): "G", ("A", "C"): "C", ("A", "T"): "T",
-        ("G", "G"): "A", ("G", "C"): "T", ("G", "T"): "C",
-        ("C", "C"): "A", ("C", "T"): "G",
-        ("T", "T"): "A"
-    }
-    return [addition_rules.get((base1[i], base2[i])) or addition_rules.get((base2[i], base1[i])) for i in range(4)]
+    return apply_dna_rule(DNA_XOR_RULES, base1, base2)
 
 
-# Функция вычитания оснований ДНК
 def dna_sub(base1, base2):
-    addition_rules = {
-        ("A", "A"): "A", ("A", "G"): "T", ("A", "C"): "C", ("A", "T"): "G",
-        ("G", "A"): "G", ("G", "G"): "A", ("G", "C"): "T", ("G", "T"): "C",
-        ("C", "A"): "C", ("C", "G"): "G", ("C", "C"): "A", ("C", "T"): "T",
-        ("T", "A"): "T", ("T", "G"): "C", ("T", "C"): "G", ("T", "T"): "A"
-    }
-    return [addition_rules.get((base1[i], base2[i])) for i in range(4)]
+    return [DNA_SUB_RULES[(b1, b2)] for b1, b2 in zip(base1, base2)]
 
 
 def dna_diffusion(dna_matrix1, dna_matrix2):
-    matrix_row, matrix_col, _ = dna_matrix1.shape
-    # Складываем ДНК основания по правилам
-    dna_encoded_image = np.empty((matrix_row, matrix_col, 3), dtype=object)
-    for i in range(matrix_row):
-        for j in range(matrix_col):
-            dna_encoded_image[i, j, 0] = dna_add(dna_matrix1[i, j, 0], dna_matrix2[i, j, 0])
-            dna_encoded_image[i, j, 1] = dna_sub(dna_matrix1[i, j, 1], dna_matrix2[i, j, 1])
-            dna_encoded_image[i, j, 2] = dna_xor(dna_matrix1[i, j, 2], dna_matrix2[i, j, 2])
+    # Предполагается, что размерность: (H, W, 3, 4) — 3 канала, 4 символа на байт
+    res = np.empty((dna_matrix1.shape[0], dna_matrix1.shape[1], 3, 4), dtype=object)
 
-    return dna_encoded_image
+    # Векторизованная реализация операций через np.char.add и правила
+    def vectorized_dna_op(mat1, mat2, rule_dict):
+        # Предполагается shape (H, W, 4)
+        h, w, _ = mat1.shape
+        result = np.empty((h, w, 4), dtype=object)
+        for i in range(4):
+            b1 = mat1[:, :, i].flatten()
+            b2 = mat2[:, :, i].flatten()
+            out = [rule_dict.get((x, y)) or rule_dict.get((y, x)) for x, y in zip(b1, b2)]
+            result[:, :, i] = np.array(out, dtype=object).reshape(h, w)
+        return result
 
+    res[:, :, 0] = vectorized_dna_op(dna_matrix1[:, :, 0], dna_matrix2[:, :, 0], DNA_ADD_RULES)
+    res[:, :, 1] = vectorized_dna_op(dna_matrix1[:, :, 1], dna_matrix2[:, :, 1], DNA_SUB_RULES)
+    res[:, :, 2] = vectorized_dna_op(dna_matrix1[:, :, 2], dna_matrix2[:, :, 2], DNA_XOR_RULES)
 
-def dna_diffusion_reverse(dna_matrix1, dna_matrix2):
-    matrix_row, matrix_col, _ = dna_matrix1.shape
-    # Складываем ДНК основания по правилам
-    dna_encoded_matrix = np.empty((matrix_row, matrix_col, 3), dtype=object)
-    for i in range(matrix_row):
-        for j in range(matrix_col):
-            dna_encoded_matrix[i, j, 0] = dna_sub(dna_matrix1[i, j, 0], dna_matrix2[i, j, 0])
-            dna_encoded_matrix[i, j, 1] = dna_add(dna_matrix1[i, j, 1], dna_matrix2[i, j, 1])
-            dna_encoded_matrix[i, j, 2] = dna_xor(dna_matrix1[i, j, 2], dna_matrix2[i, j, 2])
-    return dna_encoded_matrix
+    return res
 
 
 def dna_xor_diffusion(dna_matrix1, dna_matrix2):
-    matrix_row, matrix_col, _ = dna_matrix1.shape
-    # Складываем ДНК основания по правилам
-    dna_encoded_image = np.empty((matrix_row, matrix_col, 3), dtype=object)
-    for i in range(matrix_row):
-        for j in range(matrix_col):
-            dna_encoded_image[i, j, 0] = dna_xor(dna_matrix1[i, j, 0], dna_matrix2[i, j, 0])
-            dna_encoded_image[i, j, 1] = dna_xor(dna_matrix1[i, j, 1], dna_matrix2[i, j, 1])
-            dna_encoded_image[i, j, 2] = dna_xor(dna_matrix1[i, j, 2], dna_matrix2[i, j, 2])
+    def vectorized_xor(mat1, mat2):
+        flat_shape = (-1, 4)
+        m1 = mat1.reshape(flat_shape)
+        m2 = mat2.reshape(flat_shape)
+        result = np.empty_like(m1)
+        for i in range(4):
+            b1 = m1[:, i]
+            b2 = m2[:, i]
+            result[:, i] = [DNA_XOR_RULES.get((x, y)) or DNA_XOR_RULES.get((y, x)) for x, y in zip(b1, b2)]
+        return result.reshape(mat1.shape)
 
-    return dna_encoded_image
+    dna_matrix1[:, :, 0] = vectorized_xor(dna_matrix1[:, :, 0], dna_matrix2[:, :, 0])
+    dna_matrix1[:, :, 1] = vectorized_xor(dna_matrix1[:, :, 1], dna_matrix2[:, :, 1])
+    dna_matrix1[:, :, 2] = vectorized_xor(dna_matrix1[:, :, 2], dna_matrix2[:, :, 2])
+    return dna_matrix1
 
 
 def encrypt_image(image_array, initial_state12):
+    time1 = time.time()
     img_row, img_col, _ = image_array.shape
 
     initial_state1 = initial_state12[:3]    # Начальнные данные
@@ -218,44 +238,55 @@ def encrypt_image(image_array, initial_state12):
     solution2 = solve_ivp(
         main_system, [0, 200], initial_state2, t_eval=np.linspace(100, 200, img_col * img_row)
     )
+    time2 = time.time()
+    # Вычисление корреляционной размерности
+    # dimension = corr_dim(np.array(solution1.y[0]), emb_dim=3)
+    # print(f"Корреляционная размерность: {dimension}")
 
     # Получаем матрицы для шифрования изображения
     matrix_a = convert_for_encrypt(solution1.y, img_row, img_col)
     matrix_b = convert_for_encrypt(solution2.y, img_row, img_col)
-
+    time3 = time.time()
     # Применяем метод ротационного арифметичесского извлечения
     mixed_matrix = mix_matrix(image_array)
     # print_image(mixed_matrix, "Перемешанное изображение")
-
+    time4 = time.time()
     # Применение ДНК кодирование для изображения и матрицы
-    dna_image = uint8_matrix_to_dna(mixed_matrix)
-    dna_matrix_a = uint8_matrix_to_dna(matrix_a)
-    dna_matrix_b = uint8_matrix_to_dna(matrix_b)
 
+    dna_image, dna_matrix_a, dna_matrix_b = uint8_matrix_to_dna(mixed_matrix, matrix_a, matrix_b)
+    time5 = time.time()
     # Применяем диффузию между изображением и матрицей
     dna_encoded_image = dna_diffusion(dna_image, dna_matrix_a)
+    time6 = time.time()
     dna_encoded_image = dna_xor_diffusion(dna_encoded_image, dna_matrix_b)
-
+    time7 = time.time()
     # Преобразуем ДНК код обратно в байты
-    return dna_matrix_to_uint8(dna_encoded_image)
+    result = dna_matrix_to_uint8(dna_encoded_image)
+    time8 = time.time()
 
+    print(f'Решение ДС: {time2 - time1:.4f} секунд')
+    print(f'Получаем матрицы для шифрования изображения: {time3 - time2:.4f} секунд')
+    print(f'Перемешиваем матрицы: {time4 - time3:.4f} секунд')
+    print(f'ДНК кодирование: {time5 - time4:.4f} секунд')
+    print(f'Диффузия1: {time6 - time5:.4f} секунд')
+    print(f'Диффузия2: {time7 - time6:.4f} секунд')
+    print(f'Обратное ДНК кодирование: {time8 - time7:.4f} секунд')
+    return result
 
-# Загружаем изображение
-lena = Image.open("images/lena.png")
-image_array = np.array(lena)
-img_row, img_col, _ = image_array.shape
-
-# --------------------------------- Шифрование ---------------------------------
 
 # Решение системы
 initial_state12 = get_initial_state(image_array)    # Начальные условия
 
+start_time = time.time()
 encrypted_image = encrypt_image(image_array, initial_state12)
+print(f"\nОбщее время выполнения кодирования: {time.time() - start_time:.4f} секунд")
 
-# --------------------------------- Численныйт анализ ---------------------------------
+# --------------------------------- Дешифровка ---------------------------------
 
-# Шумовые атаки
+start_time = time.time()
+decrypted_image = decrypt_image(encrypted_image, initial_state12)
+print(f"\nОбщее время выполнения декодирования: {time.time() - start_time:.4f} секунд")
 
-noised_image = analyse_noise_attacks(encrypted_image, 0.2)
-noised_decryted_image = decrypt_image(noised_image, initial_state12)
-print_encryption_result(image_array, noised_image, noised_decryted_image)
+# --------------------------------- Вывод изображений ---------------------------------
+
+print_encryption_result(image_array, encrypted_image, decrypted_image)

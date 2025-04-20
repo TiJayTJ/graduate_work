@@ -4,20 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="add modified matrix mixing">
-      <change afterPath="$PROJECT_DIR$/ds_analysis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_lce.py" afterDir="false" />
+    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attractor_calc.py" beforeDir="false" afterPath="$PROJECT_DIR$/attractor_calc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bifurcation.py" beforeDir="false" afterPath="$PROJECT_DIR$/bifurcation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dna.py" beforeDir="false" afterPath="$PROJECT_DIR$/dna.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encrypt_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/encrypt_decrypt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encryption_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/empty.py" beforeDir="false" afterPath="$PROJECT_DIR$/empty.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrix.py" beforeDir="false" afterPath="$PROJECT_DIR$/matrix.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params_range.py" beforeDir="false" afterPath="$PROJECT_DIR$/params_range.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/printers.py" beforeDir="false" afterPath="$PROJECT_DIR$/printers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/system.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,33 +34,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.attractor_calc.executor": "Run",
-    "Python.biff.executor": "Run",
-    "Python.bifurcation.executor": "Run",
-    "Python.ds_analysis.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.matrix.executor": "Run",
-    "Python.params_range (1).executor": "Run",
-    "Python.params_range.executor": "Run",
-    "Python.system.executor": "Run",
-    "Python.test_lce.executor": "Run",
-    "Python.test_mixing (1).executor": "Run",
-    "Python.test_mixing.executor": "Run",
-    "Python.testing.executor": "Run",
-    "Python.text_correlation.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/SPbGU/Курсовые/graduate_work",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.attractor_calc.executor&quot;: &quot;Run&quot;,
+    &quot;Python.biff.executor&quot;: &quot;Run&quot;,
+    &quot;Python.bifurcation.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ds_analysis.executor&quot;: &quot;Run&quot;,
+    &quot;Python.empty.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.matrix.executor&quot;: &quot;Run&quot;,
+    &quot;Python.params_range (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.params_range.executor&quot;: &quot;Run&quot;,
+    &quot;Python.system.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_lce.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_mixing (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_mixing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.text_correlation.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/SPbGU/Курсовые/graduate_work&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\SPbGU\Курсовые\graduate_work\images" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.empty">
     <configuration name="attractor_calc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="graduate_work" />
       <option name="ENV_FILES" value="" />
@@ -107,6 +98,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ds_analysis.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="empty" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="graduate_work" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/empty.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -181,35 +194,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test_lce" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="graduate_work" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_lce.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.empty" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.attractor_calc" />
         <item itemvalue="Python.ds_analysis" />
         <item itemvalue="Python.system" />
-        <item itemvalue="Python.test_lce" />
       </list>
     </recent_temporary>
   </component>
@@ -365,7 +356,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743714080282</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update">
+      <option name="closed" value="true" />
+      <created>1744683072656</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1744683072656</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -389,7 +388,6 @@
     <MESSAGE value="add dna diffusion" />
     <MESSAGE value="add dna diffusion reverse" />
     <MESSAGE value="add xor dna diffusion" />
-    <MESSAGE value="update" />
     <MESSAGE value="working encryption algorithm" />
     <MESSAGE value="code editing" />
     <MESSAGE value="add histogram_analise()" />
@@ -397,6 +395,7 @@
     <MESSAGE value="add analyse_correlation() and analysis_information_entropy()" />
     <MESSAGE value="add analyse_noise_attacks and analyse_cropping_attacks" />
     <MESSAGE value="add modified matrix mixing" />
-    <option name="LAST_COMMIT_MESSAGE" value="add modified matrix mixing" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
 </project>
