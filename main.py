@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 from encrypt_decrypt import encrypt_image, decrypt_image
 from encryption_analysis import histogram_analise, analyse_correlation, analysis_information_entropy, \
-    analyse_noise_attacks, analyse_cropping_attacks, analyse_key_sensitivity
+                                analyse_key_sensitivity, analyse_noise_attacks, analyse_cropping_attacks
 from matrix import mix_block_matrix, make_block_matrix, remake_block_matrix, mix_matrix, unmix_block_matrix
 from printers import print_encryption_result, print_image
 from system import get_initial_state
@@ -67,20 +67,16 @@ print(f"\nОбщее время выполнения кодирования: {ti
 
 # Шумовые атаки
 
-# noised_image = analyse_noise_attacks(encrypted_image, 0.2)
-# noised_decryted_image = decrypt_image(noised_image, initial_state12)
-# print_encryption_result(image_array, noised_image, noised_decryted_image)
+# analyse_noise_attacks(encrypted_image, initial_state12)
 
 # Атаки с обрезкой
 
-# cropped_image = analyse_cropping_attacks(encrypted_image, 25)
-# cropped_decryted_image = decrypt_image(cropped_image, initial_state12)
-# print_encryption_result(image_array, cropped_image, cropped_decryted_image)
+analyse_cropping_attacks(encrypted_image, initial_state12)
 
 # --------------------------------- Дешифровка ---------------------------------
 
-decrypted_image = decrypt_image(encrypted_image, initial_state12)
+# decrypted_image = decrypt_image(encrypted_image, initial_state12)
 
 # --------------------------------- Вывод изображений ---------------------------------
 
-print_encryption_result(image_array, encrypted_image, decrypted_image)
+# print_encryption_result(image_array, encrypted_image, decrypted_image)

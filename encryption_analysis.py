@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 from encrypt_decrypt import encrypt_image, decrypt_image
 from matrix import array_to_matrix
-from printers import print_image
+from printers import print_image, print_six_img
 
 
 # ---------------------------------------------------------------------------------------------
@@ -58,56 +58,13 @@ def analyse_key_sensitivity(image_array, initial_state12):
         decrypted_images[i] = decrypt_image(encrypted_image, new_initial_state)
     decrypted_image = decrypt_image(encrypted_image, initial_state12)
 
-    # Вывод
-    fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-
-    axes[0][0].imshow(image_array)
-    axes[0][0].axis("off")
-    axes[0][0].set_title("Исходное изображение")
-
-    axes[0][1].imshow(encrypted_image)
-    axes[0][1].axis("off")
-    axes[0][1].set_title("Зашифрованное изображение, исхожный ключ")
-
-    axes[0][2].imshow(decrypted_images[0])
-    axes[0][2].axis("off")
-    axes[0][2].set_title("Расшифрованное изображение, ключ 1")
-
-    axes[1][0].imshow(decrypted_images[1])
-    axes[1][0].axis("off")
-    axes[1][0].set_title("Расшифрованное изображение, ключ 2")
-
-    axes[1][1].imshow(decrypted_images[2])
-    axes[1][1].axis("off")
-    axes[1][1].set_title("Расшифрованное изображение, ключ 3")
-
-    axes[1][2].imshow(decrypted_image)
-    axes[1][2].axis("off")
-    axes[1][2].set_title("Расшифрованное изображение, исходный ключ")
-
-    plt.show()
-
+    print_six_img([image_array, encrypted_image, decrypted_images[0], decrypted_images[1], decrypted_images[2],
+                   decrypted_image],
+                  ["Исходное изображение", "Зашифрованное изображение, исхожный key",
+                   "Зашифрованное изображение, исхожный key1", "Зашифрованное изображение, исхожный key2",
+                   "Зашифрованное изображение, исхожный key3", "Расшифрованное изображение, исходный key"])
 
 # ---------------------------------------------------------------------------------------------
-def g_func(x):
-    n = len(x)
-    return sum(x) / n
-
-
-def f_func(x, g_func_x):
-    n = len(x)
-    return sum((xi - g_func_x)**2 for xi in x) / n
-
-
-def cov_func(x, y, g_func_x, g_func_y):
-    n = len(x)
-    return sum((xi - g_func_x) * (yi - g_func_y) for xi, yi in zip(x, y)) / n
-
-
-def correlation_coef(x, y):
-    g_func_x = g_func(x)
-    g_func_y = g_func(y)
-    return cov_func(x, y, g_func_x, g_func_y) / (f_func(x, g_func_x) * f_func(y, g_func_y)) ** 0.5
 
 
 def analyse_correlation(image_array):
@@ -133,15 +90,7 @@ def analyse_correlation(image_array):
         d_adj = channel[:-1, :-1].flatten(), channel[1:, 1:].flatten()
 
         # Вычисляем коэффициенты корреляции
-        h_correlation = correlation_coef(h_adj[0], h_adj[1])
-        v_correlation = correlation_coef(v_adj[0], v_adj[1])
-        d_correlation = correlation_coef(d_adj[0], d_adj[1])
         print(f"Цвет {color}:")
-        # print('(Посчитанные вручную)')
-        # print(f"h:\t", h_correlation)
-        # print(f"v:\t", v_correlation)
-        # print(f"d:\t", d_correlation)
-        # print('(Точные)')
         print(f"h:\t", np.corrcoef(h_adj[0], h_adj[1])[0, 1])
         print(f"v:\t", np.corrcoef(v_adj[0], v_adj[1])[0, 1])
         print(f"d:\t", np.corrcoef(d_adj[0], d_adj[1])[0, 1])
@@ -188,22 +137,57 @@ def analysis_information_entropy(image_array):
 
 
 # ---------------------------------------------------------------------------------------------
-def analyse_noise_attacks(image_array, intensity):
+def noise_attack(image_array, intensity):
     row, col, high = image_array.shape
     noise = array_to_matrix(np.random.normal(0, 255 * intensity, row * col), row, col)
     noise_image = np.empty((row, col, high), dtype=np.uint8)
     for i in range(high):
         noise_image[:, :, i] = image_array[:, :, i] + noise
 
-    return noise_image
+    return noise, noise_image
 
 
-def analyse_cropping_attacks(image_array, intensity):
+def analyse_noise_attacks(encrypted_image, initial_state12):
+    noise001, noised_image001 = noise_attack(encrypted_image, 0.01)
+    noised_decryted_image001 = decrypt_image(noised_image001, initial_state12)
+
+    noise005, noised_image005 = noise_attack(encrypted_image, 0.05)
+    noised_decryted_image005 = decrypt_image(noised_image005, initial_state12)
+
+    noise02, noised_image02 = noise_attack(encrypted_image, 0.2)
+    noised_decryted_image02 = decrypt_image(noised_image02, initial_state12)
+
+    print_six_img([noise001, noise005, noise02, noised_decryted_image001, noised_decryted_image005,
+                   noised_decryted_image02],
+                  ["Шум, интенсивность 0.01", "Шум, интенсивность 0.05", "Шум, интенсивность 0.2",
+                   "Расшифровка, интенсивность 0.01", "Расшифровка, интенсивность 0.05",
+                   "Расшифровка, интенсивность 0.2"])
+
+
+def cropping_attacks(image_array, intensity):
     row, col, high = image_array.shape
 
-    for i in range(round(row * intensity * 2 / 100)):
-        for j in range(round(col * intensity * 2 / 100)):
+    cropped_image = image_array.copy()
+    for i in range(round(row * intensity)):
+        for j in range(round(col * intensity)):
             for k in range(high):
-                image_array[i, j, k] = 0
+                cropped_image[i, j, k] = 0
 
-    return image_array
+    return cropped_image
+
+
+def analyse_cropping_attacks(encrypted_image, initial_state12):
+    cropped_image0125 = cropping_attacks(encrypted_image, 0.125)
+    cropped_decryted_image0125 = decrypt_image(cropped_image0125, initial_state12)
+    cropped_image025 = cropping_attacks(encrypted_image, 0.25)
+    cropped_decryted_image025 = decrypt_image(cropped_image025, initial_state12)
+    cropped_image05 = cropping_attacks(encrypted_image, 0.5)
+    cropped_decryted_image05 = decrypt_image(cropped_image05, initial_state12)
+
+    print_six_img([cropped_image0125, cropped_image025, cropped_image05, cropped_decryted_image0125,
+                   cropped_decryted_image025, cropped_decryted_image05],
+                  ["Обрезано 1.56%", "Обрезано 6.25%", "Обрезано 25%",
+                   "Расшифрованное изображение", "Расшифрованное изображение",
+                   "Расшифрованное изображение"])
+
+# ---------------------------------------------------------------------------------------------

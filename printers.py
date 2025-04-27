@@ -70,6 +70,36 @@ def print_encryption_result(image, encoded_image, unmixed_matrix):
     plt.show()
 
 
+def print_six_img(images, titles):
+    # Вывод
+    fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+
+    axes[0][0].imshow(images[0])
+    axes[0][0].axis("off")
+    axes[0][0].set_title(titles[0])
+
+    axes[0][1].imshow(images[1])
+    axes[0][1].axis("off")
+    axes[0][1].set_title(titles[1])
+
+    axes[0][2].imshow(images[2])
+    axes[0][2].axis("off")
+    axes[0][2].set_title(titles[2])
+
+    axes[1][0].imshow(images[3])
+    axes[1][0].axis("off")
+    axes[1][0].set_title(titles[3])
+
+    axes[1][1].imshow(images[4])
+    axes[1][1].axis("off")
+    axes[1][1].set_title(titles[4])
+
+    axes[1][2].imshow(images[5])
+    axes[1][2].axis("off")
+    axes[1][2].set_title(titles[5])
+
+    plt.show()
+
 def print_image(image, title):
     plt.imshow(image)
     plt.axis("off")

@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="update">
+    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="accelerated coding">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/empty.py" beforeDir="false" afterPath="$PROJECT_DIR$/empty.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryption_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/printers.py" beforeDir="false" afterPath="$PROJECT_DIR$/printers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +62,7 @@
       <recent name="D:\SPbGU\Курсовые\graduate_work\images" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.empty">
+  <component name="RunManager" selected="Python.main">
     <configuration name="attractor_calc" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="graduate_work" />
       <option name="ENV_FILES" value="" />
@@ -196,8 +197,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.empty" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.empty" />
         <item itemvalue="Python.attractor_calc" />
         <item itemvalue="Python.ds_analysis" />
         <item itemvalue="Python.system" />
@@ -364,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744683072656</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="accelerated coding">
+      <option name="closed" value="true" />
+      <created>1745164462694</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1745164462694</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -396,6 +405,7 @@
     <MESSAGE value="add analyse_noise_attacks and analyse_cropping_attacks" />
     <MESSAGE value="add modified matrix mixing" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="accelerated coding" />
+    <option name="LAST_COMMIT_MESSAGE" value="accelerated coding" />
   </component>
 </project>
