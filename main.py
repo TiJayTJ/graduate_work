@@ -67,11 +67,11 @@ print(f"\nОбщее время выполнения кодирования: {ti
 
 # Шумовые атаки
 
-# analyse_noise_attacks(encrypted_image, initial_state12)
+analyse_noise_attacks(encrypted_image, initial_state12)
 
 # Атаки с обрезкой
 
-analyse_cropping_attacks(encrypted_image, initial_state12)
+# analyse_cropping_attacks(encrypted_image, initial_state12)
 
 # --------------------------------- Дешифровка ---------------------------------
 

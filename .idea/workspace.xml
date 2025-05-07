@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="accelerated coding">
+    <list default="true" id="4ca90392-7484-436c-8ee6-a10c060f28db" name="Changes" comment="speed up encrypt_image">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encrypt_decrypt.py" beforeDir="false" afterPath="$PROJECT_DIR$/encrypt_decrypt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/encryption_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/printers.py" beforeDir="false" afterPath="$PROJECT_DIR$/printers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params_range.py" beforeDir="false" afterPath="$PROJECT_DIR$/params_range.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,6 +152,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="params_range (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="graduate_work" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/params_range.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="params_range" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="graduate_work" />
       <option name="ENV_FILES" value="" />
@@ -173,35 +196,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="system" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="graduate_work" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/system.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.params_range (1)" />
         <item itemvalue="Python.empty" />
         <item itemvalue="Python.attractor_calc" />
         <item itemvalue="Python.ds_analysis" />
-        <item itemvalue="Python.system" />
       </list>
     </recent_temporary>
   </component>
@@ -373,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745164462694</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="speed up encrypt_image">
+      <option name="closed" value="true" />
+      <created>1745768815317</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1745768815317</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -406,6 +415,7 @@
     <MESSAGE value="add modified matrix mixing" />
     <MESSAGE value="update" />
     <MESSAGE value="accelerated coding" />
-    <option name="LAST_COMMIT_MESSAGE" value="accelerated coding" />
+    <MESSAGE value="speed up encrypt_image" />
+    <option name="LAST_COMMIT_MESSAGE" value="speed up encrypt_image" />
   </component>
 </project>

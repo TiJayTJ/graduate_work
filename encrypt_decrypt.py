@@ -17,7 +17,7 @@ def convert_for_encrypt(array, n, m):
     z_val_converted = z_val[:n*m]
 
     # Преобразования решения в матрицу
-    p = 10
+    p = 5
     for i in range(n*m):
         x_val_converted[i] = int(x_val_converted[i] * 10**p) % 256
         y_val_converted[i] = int(y_val_converted[i] * 10**p) % 256

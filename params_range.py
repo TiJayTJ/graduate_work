@@ -38,8 +38,9 @@ for i in range(len(koefs)):
     # Plot of LCE
     plt.figure(figsize=(10, 6))
     plt.plot(LCE_results)
-    plt.xlabel("Параметр " + koefs_titles[i])
-    plt.ylabel("Старшие показатели Ляпунова")
+    plt.xlabel("Параметр " + koefs_titles[i], fontsize=24)
+    plt.ylabel("Показатели Ляпунова", fontsize=24)
+    plt.tick_params(axis='both', which='major', labelsize=24)
     # Настройка шкалы X — только целые значения
     x_vals = np.arange(len(LCE_results))
     x_labels = x_vals / 10

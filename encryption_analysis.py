@@ -60,9 +60,9 @@ def analyse_key_sensitivity(image_array, initial_state12):
 
     print_six_img([image_array, encrypted_image, decrypted_images[0], decrypted_images[1], decrypted_images[2],
                    decrypted_image],
-                  ["Исходное изображение", "Зашифрованное изображение, исхожный key",
-                   "Зашифрованное изображение, исхожный key1", "Зашифрованное изображение, исхожный key2",
-                   "Зашифрованное изображение, исхожный key3", "Расшифрованное изображение, исходный key"])
+                  ["Исходное изображение", "Зашифрованное изображение, key",
+                   "Расшифрованное изображение, key1", "Расшифрованное изображение, key2",
+                   "Расшифрованное изображение, key3", "Расшифрованное изображение, key"])
 
 # ---------------------------------------------------------------------------------------------
 
@@ -139,10 +139,12 @@ def analysis_information_entropy(image_array):
 # ---------------------------------------------------------------------------------------------
 def noise_attack(image_array, intensity):
     row, col, high = image_array.shape
-    noise = array_to_matrix(np.random.normal(0, 255 * intensity, row * col), row, col)
+    noise_layer = array_to_matrix(np.random.normal(0, 255 * intensity, row * col), row, col)
+    noise = np.empty((row, col, high), dtype=np.uint8)
     noise_image = np.empty((row, col, high), dtype=np.uint8)
     for i in range(high):
-        noise_image[:, :, i] = image_array[:, :, i] + noise
+        noise_image[:, :, i] = image_array[:, :, i] + noise_layer
+        noise[:, :, i] = noise_layer
 
     return noise, noise_image
 
@@ -160,8 +162,8 @@ def analyse_noise_attacks(encrypted_image, initial_state12):
     print_six_img([noise001, noise005, noise02, noised_decryted_image001, noised_decryted_image005,
                    noised_decryted_image02],
                   ["Шум, интенсивность 0.01", "Шум, интенсивность 0.05", "Шум, интенсивность 0.2",
-                   "Расшифровка, интенсивность 0.01", "Расшифровка, интенсивность 0.05",
-                   "Расшифровка, интенсивность 0.2"])
+                   "Расшифрование, интенсивность 0.01", "Расшифрование, интенсивность 0.05",
+                   "Расшифрование, интенсивность 0.2"])
 
 
 def cropping_attacks(image_array, intensity):
